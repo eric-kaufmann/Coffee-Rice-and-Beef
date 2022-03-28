@@ -1,0 +1,67 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.13.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{python}
+import pandas as pd
+import numpy as np
+import atoti as tt
+```
+
+```{python}
+df = pd.read_csv('rice_beef_coffee_price_changes.csv')
+```
+
+```{python}
+df
+```
+
+```{python}
+df.describe()
+```
+
+```{python}
+session = tt.create_session()
+```
+
+```{python}
+data = session.read_pandas(
+    df,
+    keys=['Year', 'Month'],
+    table_name='Data'
+)
+```
+
+```{python}
+data.head()
+```
+
+```{python}
+cube = session.create_cube(data)
+```
+
+```{python}
+m,l,h = cube.measures, cube.levels, cube.hierarchies
+```
+
+```{python}
+m
+```
+
+```{python atoti={'widget': {'mapping': {'xAxis': ['[Data].[Year].[Year]', '[Data].[Month].[Month]'], 'values': ['[Measures].[Price_beef_infl.SUM]'], 'splitBy': ['ALL_MEASURES'], 'horizontalSubplots': [], 'verticalSubplots': []}, 'query': {'updateMode': 'once', 'mdx': 'SELECT NON EMPTY Crossjoin(Hierarchize(Descendants({[Data].[Year].[AllMember]}, 1, SELF_AND_BEFORE)), Hierarchize(Descendants({[Data].[Month].[AllMember]}, 1, SELF_AND_BEFORE))) ON ROWS, NON EMPTY {[Measures].[Price_beef_infl.SUM]} ON COLUMNS FROM [Data] CELL PROPERTIES VALUE, FORMATTED_VALUE, BACK_COLOR, FORE_COLOR, FONT_FLAGS'}, 'widgetKey': 'plotly-line-chart', 'serverKey': 'default'}}, tags=c()}
+session.visualize()
+```
+
+```{python}
+
+```
