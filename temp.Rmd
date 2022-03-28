@@ -56,7 +56,9 @@ import atoti as tt
 ```
 
 ```{python}
-session = tt.create_session()
+session = tt.Session(
+    port=8070
+)
 ```
 
 ```{python}
