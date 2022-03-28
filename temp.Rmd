@@ -48,6 +48,9 @@ df.fillna(0, inplace=True)
 
 # Postprocessting with atoti
 
+
+## Load data and create cube
+
 ```{python}
 import atoti as tt
 ```
@@ -77,6 +80,29 @@ m,l,h = cube.measures, cube.levels, cube.hierarchies
 m
 ```
 
-```{python atoti={'widget': {'mapping': {'xAxis': ['[Data].[Year].[Year]', '[Data].[Month].[Month]'], 'values': ['[Measures].[Price_beef_infl.SUM]'], 'splitBy': ['ALL_MEASURES'], 'horizontalSubplots': [], 'verticalSubplots': []}, 'query': {'updateMode': 'once', 'mdx': 'SELECT NON EMPTY Crossjoin(Hierarchize(Descendants({[Data].[Year].[AllMember]}, 1, SELF_AND_BEFORE)), Hierarchize(Descendants({[Data].[Month].[AllMember]}, 1, SELF_AND_BEFORE))) ON ROWS, NON EMPTY {[Measures].[Price_beef_infl.SUM]} ON COLUMNS FROM [Data] CELL PROPERTIES VALUE, FORMATTED_VALUE, BACK_COLOR, FORE_COLOR, FONT_FLAGS'}, 'widgetKey': 'plotly-line-chart', 'serverKey': 'default'}}, tags=c()}
+```{python}
+# Sorting measures
+m['Inflation_rate.SUM'].folder = 'Inflation'
+m['Inflation_rate.MEAN'].folder = 'Inflation'
+
+m['Price_beef_kilo.SUM'].folder = 'Beef'
+m['Price_beef_kilo.MEAN'].folder = 'Beef'
+m['Price_beef_infl.MEAN'].folder = 'Beef'
+m['Price_beef_infl.SUM'].folder = 'Beef'
+
+m['Price_coffee_kilo.SUM'].folder = 'Coffee'
+m['Price_coffee_kilo.MEAN'].folder = 'Coffee'
+m['Price_coffee_infl.MEAN'].folder = 'Coffee'
+m['Price_coffee_infl.SUM'].folder = 'Coffee'
+
+m['Price_rice_kilo.SUM'].folder = 'Rice'
+m['Price_rice_kilo.MEAN'].folder = 'Rice'
+m['Price_rice_infl.MEAN'].folder = 'Rice'
+m['Price_rice_infl.SUM'].folder = 'Rice'
+
+m['contributors.COUNT'].visible = False
+```
+
+```{python atoti={'widget': {'mapping': {'xAxis': ['[Data].[Year].[Year]', '[Data].[Month].[Month]'], 'values': ['[Measures].[Price_beef_infl.SUM]'], 'splitBy': ['ALL_MEASURES'], 'horizontalSubplots': [], 'verticalSubplots': []}, 'query': {'updateMode': 'once', 'mdx': 'SELECT NON EMPTY {[Measures].[Price_beef_infl.SUM]} ON COLUMNS, NON EMPTY Crossjoin(Hierarchize(Descendants({[Data].[Year].[AllMember]}, 1, SELF_AND_BEFORE)), Hierarchize(Descendants({[Data].[Month].[AllMember]}, 1, SELF_AND_BEFORE))) ON ROWS FROM [Data] CELL PROPERTIES VALUE, FORMATTED_VALUE, BACK_COLOR, FORE_COLOR, FONT_FLAGS'}, 'widgetKey': 'plotly-line-chart', 'serverKey': 'default'}}, tags=c()}
 session.visualize()
 ```
